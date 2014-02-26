@@ -28,6 +28,7 @@
 #  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 # 
 
+import json
 import re
 import sys
 from optparse import OptionParser
@@ -51,8 +52,8 @@ def fromy4m2yuv(options):
     while True:
         frame_header = in_file.readline()
         if(frame_header.startswith('FRAME')==False): 
-            print('End of Sequence')
-            return
+            print('\nEnd of Sequence')
+            break
         frame = in_file.read(framesize)
         out_file.write(frame)
 
@@ -63,6 +64,20 @@ def fromy4m2yuv(options):
     print("")
     in_file.close()
     out_file.close()
+
+    #output metadata file
+    m = {}
+    m['filename'] = options.outfile
+    m['width'] = width
+    m['height'] = height
+    m['framesize'] = framesize
+    m['format'] = '420P'
+    m['frame_count'] = c
+
+    f = open(options.outfile + ".json", "w")
+    f.write(json.dumps(m, sort_keys=True, indent=4, separators=(',',': ')))
+    f.close()
+
     return
 
 
@@ -131,7 +146,7 @@ def main(argv):
         try:
             fromy4m2yuv(options)
         except:
-            print("there was a problem converting the yuv file")
+            print("there was a problem converting the yuv file.", sys.exc_info()[0] )
 
 
 if __name__ == "__main__":
