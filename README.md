@@ -16,6 +16,12 @@ y4mconv.py -i input.y4m -o output.yuv
 It's important to note that yuv files are raw pixel data so all information about resolution and framerate is lost in this conversion.
 Y4MCONV however, generates a metadata file in json format with the same name of the output yuv file that contains all the relevant format information about the sequence.
 
+To query information about a Y4M file simply do:
+
+```
+y4mconf.py -i input.y4m
+```
+
 
 
 ## YUV to Y4M conversion ##

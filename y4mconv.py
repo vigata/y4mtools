@@ -35,7 +35,6 @@ from optparse import OptionParser
 
 def fromy4m2yuv(options):
     """ takes a y4m file and transforms it into a raw yuv file """
-    out_file = open(options.outfile, 'wb')
     in_file = open(options.infile, 'rb' )
 
     header = in_file.readline()
@@ -44,8 +43,24 @@ def fromy4m2yuv(options):
     height = (re.compile("H(\d+)").findall(header))[0]
 
     framesize = int(width)*int(height)*3/2;
-    print("{0}x{1} framesize={2}".format(width,height,framesize))
 
+    #output metadata file
+    m = {}
+    if options.outfile:
+        m['filename'] = options.outfile
+    m['width'] = width
+    m['height'] = height
+    m['framesize'] = framesize
+    m['format'] = '420P'
+
+    yinfo = json.dumps(m, sort_keys=True, indent=4, separators=(',',': '))
+    print(yinfo)
+
+    if options.outfile==None:
+        in_file.close()
+        return
+
+    out_file = open(options.outfile, 'wb')
     c=0
 
     #FIXME this needs to support other formats than 420
@@ -65,17 +80,12 @@ def fromy4m2yuv(options):
     in_file.close()
     out_file.close()
 
-    #output metadata file
-    m = {}
-    m['filename'] = options.outfile
-    m['width'] = width
-    m['height'] = height
-    m['framesize'] = framesize
-    m['format'] = '420P'
+
     m['frame_count'] = c
 
+    yinfo = json.dumps(m, sort_keys=True, indent=4, separators=(',',': '))
     f = open(options.outfile + ".json", "w")
-    f.write(json.dumps(m, sort_keys=True, indent=4, separators=(',',': ')))
+    f.write(yinfo)
     f.close()
 
     return
@@ -83,6 +93,9 @@ def fromy4m2yuv(options):
 
 
 def fromyuv2y4m(options):
+    if options.outfile==None:
+        print("Output file must be provided")
+
     #open out file
     out_file = open(options.outfile, 'wb')
     in_file = open(options.infile, 'rb' )
@@ -132,8 +145,8 @@ def main(argv):
 
     (options, args) = parser.parse_args()
 
-    if options.infile == None or options.outfile==None:
-        print("and input and output file must be provided")
+    if options.infile == None:
+        print("and input file must be provided")
         return
 
 
