@@ -32,7 +32,7 @@ To create Y4M files from a yuv you can:
 y4mconv.py -i input.yuv -o output.y4m -w WIDTH -e HEIGHT -num 25 -den 1
 ```
 
-Because YUV files are naked you need to explicitely set the width and the height. Notice that the height parameter is set with the '-e' option due the fact that '-h' brings up the help. 
+Because YUV files are naked you need to explicitely set the width and the height. Notice that the height parameter is set with the '-e' option due the fact that '-h' brings up the help. The framerate of the file is determined by num/den 
 
 ## Help ##
 
