@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 
 # @@--
 #  Copyright (C) 2014 Alberto Vigata
@@ -31,6 +31,7 @@
 import json
 import re
 import sys
+import os
 from optparse import OptionParser
 
 def fromy4m2yuv(options):
@@ -41,6 +42,7 @@ def fromy4m2yuv(options):
 
     width = (re.compile("W(\d+)").findall(header))[0]
     height = (re.compile("H(\d+)").findall(header))[0]
+    (fpsnum, fpsden) = (re.compile("F(\d+):(\d+)").findall(header))[0]
 
     framesize = int(width)*int(height)*3/2;
 
@@ -48,9 +50,13 @@ def fromy4m2yuv(options):
     m = {}
     if options.outfile:
         m['filename'] = options.outfile
+        m['nickname'] = os.path.basename(os.path.splitext(options.outfile)[0])
+
     m['width'] = width
     m['height'] = height
     m['framesize'] = framesize
+    m['fpsnum'] = fpsnum
+    m['fpsden'] = fpsden
     m['format'] = '420P'
 
     yinfo = json.dumps(m, sort_keys=True, indent=4, separators=(',',': '))
