@@ -56,7 +56,7 @@ def fromy4m2yuv(options):
     m['height'] = height
     m['framesize'] = framesize
     m['fpsnum'] = fpsnum
-    m['fpsden'] = fpsden
+    m['fpsden'] = int(fpsden)*(int(options.frame_skip)+int(1))
     m['format'] = '420P'
 
     yinfo = json.dumps(m, sort_keys=True, indent=4, separators=(',',': '))
@@ -68,6 +68,9 @@ def fromy4m2yuv(options):
 
     out_file = open(options.outfile, 'wb')
     c=0
+    fs = 0
+    if(options.frame_skip>0):
+        print("frame_skip is on. framerate {0}/{1} => {2}/{3}".format(fpsnum,fpsden,m['fpsnum'],m['fpsden']))
 
     #FIXME this needs to support other formats than 420
     while True:
@@ -76,11 +79,16 @@ def fromy4m2yuv(options):
             print('\nEnd of Sequence')
             break
         frame = in_file.read(framesize)
-        out_file.write(frame)
+        fs+=1
 
-        sys.stdout.write("\r{0}".format(c));
-        sys.stdout.flush()
-        c+=1
+        if fs >= options.frame_skip+1:
+            out_file.write(frame)
+
+            sys.stdout.write("\r{0}".format(c));
+            sys.stdout.flush()
+            c+=1
+            fs=0
+
 
     print("")
     in_file.close()
@@ -148,6 +156,7 @@ def main(argv):
     parser.add_option("-f", "--format", dest="format", help="the format")
     parser.add_option("-n", "--num", dest="num", help="the numerator of framerate")
     parser.add_option("-d", "--den", dest="den", help="the denominator of framerate")
+    parser.add_option("--frame-skip", type="int", dest="frame_skip", help="skip this many frames (divide framerate by (frame_skip+1))", default=0)
 
     (options, args) = parser.parse_args()
 
