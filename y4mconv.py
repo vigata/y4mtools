@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 # @@--
-#  Copyright (C) 2014 Alberto Vigata
+#  Copyright (C) 2019 Alberto Vigata
 #  All rights reserved
 #  
 #  Redistribution and use in source and binary forms, with or without

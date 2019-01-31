@@ -41,3 +41,12 @@ For all supported options type:
 ```
 y4mconv.py -h
 ```
+
+## Author ##
+Check my other projects like [codecbench], [CABSscore specification], or my very own [linked in profile](http://www.linkedin.com/in/vigata)
+
+
+[CABSscore specification]:http://codecbench.nelalabs.com/cabs
+[codecbench]:http://github.com/vigata/codecbench
+[alberto vigata]:http://www.linkedin.com/in/vigata
+[Image Quality Assessment (IQA)]:http://tdistler.com/iqa/
