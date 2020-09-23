@@ -1,5 +1,6 @@
 y4mtools 
 ========
+ffmpeg-less, pure python, y4m conversion tools
 
 ## Y4MCONV ##
 Y4M is an increasingly popular format for yuv sequences due to the fact that it includes the basic format data embedded in the file. Old style YUV files are just raw pixel data which has always carried challenges in terms of metadata management. 

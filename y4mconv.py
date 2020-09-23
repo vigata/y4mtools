@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 # @@--
-#  Copyright (C) 2019 Alberto Vigata
+#  Copyright (C) 2020 Alberto Vigata
 #  All rights reserved
 #  
 #  Redistribution and use in source and binary forms, with or without
@@ -86,6 +86,7 @@ def fromy4m2yuv(options):
 
             sys.stdout.write("\r{0}".format(c));
             sys.stdout.flush()
+            m['frame_count'] = c
             c+=1
             fs=0
 
@@ -95,7 +96,6 @@ def fromy4m2yuv(options):
     out_file.close()
 
 
-    m['frame_count'] = c
 
     yinfo = json.dumps(m, sort_keys=True, indent=4, separators=(',',': '))
     f = open(options.outfile + ".json", "w")
